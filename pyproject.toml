@@ -1,0 +1,61 @@
+[project]
+name = "python_template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "structlog>=25.1.0",
+]
+packages = [{include = "python_template"}, {include = "scripts"}]
+
+[project.scripts]
+example = "scripts.example:main"
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.398",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.26.0",
+    "ruff>=0.9.7",
+]
+
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff.lint]
+select = ["ALL"]
+exclude = ["typings", "*.pyi"]
+ignore = [
+    "D",      # Docstring checking
+    "S101",   # Use of assert detected
+    "TD",     # "TODO" checking; FIX002 already covers this
+    "COM812", # Formatter conflict: https://github.com/astral-sh/ruff/issues/9216
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test_*.py" = [
+  "PGH003",  # allow type: ignore in tests
+  "ARG001",  # allow unused arguments in tests
+  "ARG002",  # allow unused arguments in tests
+  "ARG005",  # allow unused lambda arguments in tests
+  "ANN401",  # allow 'Any' in tests
+  "T201",    # allow print statements in tests
+  "FBT003",  # allow booleans in function arguments
+]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.uv]
+package = true
+
+[tool.pyright]
+exclude = ["**/*_test.py", "**/.*", "**/__pycache__", "typings", "*.pyi"]
+reportImplicitStringConcatenation = false
+typeCheckingMode = "strict"
+pythonVersion = "3.13"
+pythonPlatform = "Linux"
